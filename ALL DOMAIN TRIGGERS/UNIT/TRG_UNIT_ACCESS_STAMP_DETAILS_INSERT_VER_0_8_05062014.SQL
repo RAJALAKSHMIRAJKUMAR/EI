@@ -1,0 +1,16 @@
+--version:0.8 --sdate:05/06/2014 --edate:05/06/2014 --issue:529 --comment no:196 --desc:ADDED ULD_ID & TIMESTAMP OLD VALUE & NEW VALUE --done by:RL
+--version:0.7--sdate:07/04/2014 --edate:07/04/2014 --issue:797 --commentno:28 --desc: changed header name table NAME--done by:RAJA
+--version 0.6 --sdate:27/02/2014 --edate:27/02/2014 --issue:754 --comment:22 --doneby:RL	
+--version:0.4 --sdate:10/02/2014 --edate:10/02/2014 --issue:529 --desc:add comma after 1 header value is completed --doneby:RL
+--version 0.3 --sdate:08/02/2014 --edate:08/02/2014 --issue:738 --commentno:#1 --desc:ADDED ONE CONDITION FOR NOT CREATING NULL ROW IN TICKLER_HISTORY DONE BY:DHIVYA
+--version 0.3 --startdate:07/04/2014 --endate:07/04/2014 --ISSUE NO:797 --COMMENT NO:28 --desc:changed the headers names TABLE NAME --doneby:RAJA
+--version 0.1 --startdate:26/11/2013 --endate:04/12/2013 --desc:SP FOR SP_TRG_UNIT_ACCESS_STAMP_DETAILS --doneby:DINESH.M
+
+--BEFORE INSERT (passing error message) TRIGGER FOR UNIT_ACCESS_STAMP_DETAILS TABLE
+DROP TRIGGER IF EXISTS TRG_UNIT_ACCESS_STAMP_DETAILS_INSERT;
+CREATE TRIGGER TRG_UNIT_ACCESS_STAMP_DETAILS_INSERT BEFORE INSERT ON UNIT_ACCESS_STAMP_DETAILS 
+FOR EACH ROW
+BEGIN
+-- CALL QUERY FOR  SP_TRG_UNIT_ACCESS_STAMP_DETAILS
+CALL SP_TRG_UNIT_ACCESS_STAMP_DETAILS(NULL,NULL,NEW.UNIT_ID,NULL,NEW.USDT_ID,NULL,NULL,NULL,NULL,NULL,NEW.UASD_ACCESS_CARD,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NEW.URTD_ID,NULL,NULL,NULL,NULL,NULL,NULL,'INSERT');
+END;

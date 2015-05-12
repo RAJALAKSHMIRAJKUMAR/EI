@@ -1,0 +1,66 @@
+-- version:1.9 -- sdate:08/08/2014 -- edate:11/08/2014 -- issue:813,comment 50 -- desc:removed commit,exception handler BY PUNI.
+-- version:1.8 -- sdate:29/04/2014 -- edate:30/04/2014 -- issue:817 -- desc:changing all temp table as dynamic -- doneby:RL
+-- version -- > 1.7 startdate:21/04/2014 -- enddate:21/04/2014-- - issueno 615 COMMENT NO:67 -- >desc:WHILE INSERTING INTO TICKLER FOR REORDERING OF LP IN CUSTOMER LP DETAILS AND CUSTOMER FEE DETAILS, CORRECTED SUBQUERY RETURNS MORE THAN ONE ROW ERROR BY PUNI
+-- version -- > 1.6 startdate:19/04/2014 -- enddate:19/04/2014-- - issueno 615 COMMENT N0:64 -- >desc:CHANGES IN updation of ced_rec_ver for customer fee details,lp details and entry details -- done by:Bhavani.R
+-- version -- > 1.5 startdate:18/04/2014 -- enddate:18/04/2014-- - issueno 615 COMMENT N0:60 -- >desc:CHANGES IN TICKLER PART FOR ENTERING PRIMARY KEY FOR CUSTOMER_EXTENSION_SP -- done by:Bhavani.R
+-- version -- > 1.4 startdate:15/04/2014 -- enddate:16/04/2014-- - issueno 345 COMMENT N0:677 -- >desc:CREATING TICKLER PART FOR CUSTOMER_EXTENSION_SP -- done by:Bhavani.R
+-- version -- > 1.3 startdate:16/04/2014 -- enddate:16/04/2014-- - issueno 345 -desc:inserted CED_PRETERMINATE FLAG IF CUST PTD IN MIDDLE LP N EXTNDED -- done by:PUNI
+-- version -- > 1.2 startdate:01/04/2014 -- enddate:01/04/2014-- - issueno 345 -- >desc:CHECKED IF THE PASSING CARD S INVENTORY OR NOT -- done by:RL
+-- version -- > 1.1 startdate:03/04/2014 -- enddate:03/04/2014-- - issueno 797 commentno:4-- >desc:REPLACED TABLENAME AND HEADERNAME by SASIKALA.D
+-- version -- > 1.0 startdate:26/03/2014 -- enddate:26/03/2014-- - issueno 345 commentno:627-- >desc:reordered rec version of the customer-PUNI
+-- version -- > 0.9 startdate:28/02/2014 -- enddate:28/02/2014-- - issueno 754 commentno:36-- >desc:added sub sp to convert userstamp as uld_id done by:Dhivya 
+--  version -- > 0.8 startdate -- >27/02/2014 enddate -- > 27/02/2014 description -- >REPLACE USERSTAMP TO ULD_ID AND USERSTAM VARCAH TO USERSTAMPINTEGER -BALAJI
+--  version -- > 0.7 startdate -- >19/02/2014 enddate -- > 20/02/2014 description -- > Implementing flag for success message in SP_CUSTOMER_EXTENSION_INSERT done by:Bhavani.R -- >issue:594    comment:#67 
+--  version -- > 0.6 startdate -- >29/01/2014 enddate -- > 30/01/2014 description -- >UPDATED CUSTOMER ENTRY DETAILS AS PER STIME AND ETIME DATATYPE UPDATION DONE BY:DHIVYA.A -- >issue :594 comment:#71
+--  version -- > 0.5 startdate -- >21/11/2013 enddate -- > 21/11/2013 description -- >removed unexpected condition in customer access card details -- >done by:DHIVYA.A-- >issue :660
+--  version -- > 0.4 startdate -- >20/11/2013 enddate -- > 20/11/2013 description -- > added guest card column in customer access card details -- >done by:DHIVYA.A-- >issue :248-- >commentno:110
+--  version -- > 0.3 startdtae -- >06/11/2013 enddate -- > 06/11/2013 description -- > CARD IS ASSIGNED TO CUSTOMER, EMPLOYEE_DETAILS TABLE RECORD SHLD UPDATE AS NULL IF THAT CARD EXISTS FOR THE EMPLOYEE modified by & changed sp name -- >rl -- >issue :345 -- >commentno: 303
+--  version -- > 0.2 startdate -- >17/09/2013 enddate -- > 17/09/2013 description -- > added code for delete null rows in company details created by -- >CL -- >issue :615
+--  version -- > 0.1 startdate -- >23/08/2013 enddate -- > 23/08/2013 description -- > SP for the customer extension form saving part created by -- >CL -- >issue :345
+DROP PROCEDURE IF EXISTS SP_CUSTOMER_EXTENSION_FEE_DTLS_INSERT;
+CREATE PROCEDURE SP_CUSTOMER_EXTENSION_FEE_DTLS_INSERT(
+IN EX_CUSTOMER_ID INTEGER,
+IN EX_RENT DECIMAL(7,2),
+IN EX_DEPOSIT DECIMAL(7,2),
+IN EX_PROCESSING_FEE DECIMAL(7,2),
+IN EX_AIRCON_FIXED_FEE DECIMAL(7,2),
+IN EX_AIRCON_QUARTELY_FEE DECIMAL(7,2),
+IN EX_ELECTRICITY_CAP DECIMAL(7,2),
+IN EX_CHECKOUT_CLEANING_FEE DECIMAL(7,2),
+IN EX_DRYCLEAN_FEE DECIMAL(7,2),
+IN REC_VER INTEGER,
+OUT EX_SUCCESSFLAG TEXT)
+BEGIN		
+	IF EX_RENT IS NOT NULL THEN			
+		INSERT INTO CUSTOMER_FEE_DETAILS (CUSTOMER_ID,CED_REC_VER,CPP_ID,CFD_AMOUNT) VALUES (EX_CUSTOMER_ID,REC_VER+1,1,EX_RENT);
+		SET EX_SUCCESSFLAG=1;		
+	END IF;			
+	IF EX_DEPOSIT IS NOT NULL THEN			
+		INSERT INTO CUSTOMER_FEE_DETAILS (CUSTOMER_ID,CED_REC_VER,CPP_ID,CFD_AMOUNT) VALUES (EX_CUSTOMER_ID,REC_VER+1,2,EX_DEPOSIT);
+		SET EX_SUCCESSFLAG=1;			
+	END IF;			
+	IF EX_PROCESSING_FEE IS NOT NULL THEN			
+		INSERT INTO CUSTOMER_FEE_DETAILS (CUSTOMER_ID,CED_REC_VER,CPP_ID,CFD_AMOUNT) VALUES (EX_CUSTOMER_ID,REC_VER+1,3,EX_PROCESSING_FEE);
+		SET EX_SUCCESSFLAG=1;			
+	END IF;			
+	IF EX_AIRCON_FIXED_FEE IS NOT NULL THEN				
+		INSERT INTO CUSTOMER_FEE_DETAILS (CUSTOMER_ID,CED_REC_VER,CPP_ID,CFD_AMOUNT) VALUES (EX_CUSTOMER_ID,REC_VER+1,4,EX_AIRCON_FIXED_FEE);
+		SET EX_SUCCESSFLAG=1;			
+	END IF;			
+	IF EX_ELECTRICITY_CAP IS NOT NULL THEN			
+		INSERT INTO CUSTOMER_FEE_DETAILS (CUSTOMER_ID,CED_REC_VER,CPP_ID,CFD_AMOUNT) VALUES (EX_CUSTOMER_ID,REC_VER+1,5,EX_ELECTRICITY_CAP);
+		SET EX_SUCCESSFLAG=1;		
+	END IF;			
+	IF EX_DRYCLEAN_FEE IS NOT NULL THEN			
+		INSERT INTO CUSTOMER_FEE_DETAILS (CUSTOMER_ID,CED_REC_VER,CPP_ID,CFD_AMOUNT) VALUES (EX_CUSTOMER_ID,REC_VER+1,6,EX_DRYCLEAN_FEE);
+		SET EX_SUCCESSFLAG=1;		
+	END IF;			
+	IF EX_AIRCON_QUARTELY_FEE IS NOT NULL THEN			
+		INSERT INTO CUSTOMER_FEE_DETAILS (CUSTOMER_ID,CED_REC_VER,CPP_ID,CFD_AMOUNT) VALUES (EX_CUSTOMER_ID,REC_VER+1,7,EX_AIRCON_QUARTELY_FEE);
+		SET EX_SUCCESSFLAG=1;		
+	END IF;			
+	IF EX_CHECKOUT_CLEANING_FEE IS NOT NULL THEN			
+		INSERT INTO CUSTOMER_FEE_DETAILS (CUSTOMER_ID,CED_REC_VER,CPP_ID,CFD_AMOUNT) VALUES (EX_CUSTOMER_ID,REC_VER+1,8,EX_CHECKOUT_CLEANING_FEE);
+		SET EX_SUCCESSFLAG=1;		
+	END IF;
+END;

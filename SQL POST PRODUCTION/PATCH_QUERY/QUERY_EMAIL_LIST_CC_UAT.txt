@@ -1,0 +1,3 @@
+-- Wrote by SN and int in uat instance, need to insert via patch form
+insert into EMAIL_LIST (EP_ID,EL_EMAIL_ID,ULD_ID) VALUES (24,'sarathbabou.somaya@ssomens.com',12);
+insert into EMAIL_LIST (EP_ID,EL_EMAIL_ID,ULD_ID) VALUES (24,'expatsintegrated@gmail.com',12);

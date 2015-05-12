@@ -1,0 +1,10 @@
+-- version 0.3 --sadte:04/08/2014 --edate:04/08/2014 --issue:835 --commentno:37 --desc:removed rollback, commit --done by : RL
+-- version: 0.2 --sdate:09/06/2014 --edate:09/06/2014 --doneby:SASIKALA
+-- version: 0.1 --sdate:28/02/2014 --edate:28/02/2014 --doneby:RL
+DROP PROCEDURE IF EXISTS SP_CHANGE_USERSTAMP_AS_ULDID;
+CREATE PROCEDURE SP_CHANGE_USERSTAMP_AS_ULDID(
+IN USERSTAMP VARCHAR(50),
+OUT ULDID INTEGER(2))
+BEGIN
+	SET ULDID = (SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID=USERSTAMP);
+END;
